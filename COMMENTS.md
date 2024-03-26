@@ -24,6 +24,13 @@ bash start.sh
 
 O script inicia o host do Vagrant, habilita as configurações necessárias com Ansible e no final faz envio dos comentários com o curl.
 
+## Acesso ao Grafana
+
+```bash
+user: admin
+passwd: admin
+```
+
 # Comentários
 
 * 26/03 10:25 : Iniciei o projeto criando a imagem Docker em Alpine, pois é uma imagem pequena e sempre que possível, gosto de utilizá-la para economizar alguns bytes em disco. Aproveitei e fiz a limpa de alguns arquivos que foram enviados no git inicial
