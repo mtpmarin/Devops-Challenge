@@ -1,0 +1,22 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: docker:stable
+
+  variables:
+    AWS_DEFAULT_REGION: "east-us-1" # Substitua pela sua região da AWS
+    AWS_ACCESS_KEY_ID: "$AWS_ACCESS_KEY_ID"
+    AWS_SECRET_ACCESS_KEY: "$AWS_SECRET_ACCESS_KEY"
+    CLUSTER_NAME: "devops-cluster" # Substitua pelo nome do seu cluster ECS
+    SERVICE_NAME: "devops-cluster" # Substitua pelo nome do seu serviço ECS
+    TASK_DEFINITION: "deploy-challenge" # Substitua pelo ARN da sua definição de tarefa ECS
+
+  script:
+    - $(aws ecr get-login --no-include-email) # Login no ECR para acesso aos registros Docker
+    - docker build -t challenge-docker .
+    - docker tag challenge-docker:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/challenge-docker:latest
+    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/challenge-docker:latest
+    - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
+
