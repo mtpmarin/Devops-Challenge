@@ -13,4 +13,4 @@ vagrant status
 
 echo "Iniciando playbook para provisionamento"
 cd ../ansible;
-ansible -i hosts all -m ping
+ansible-playbook -i hosts devops-host.yml

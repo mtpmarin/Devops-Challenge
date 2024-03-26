@@ -1,0 +1,33 @@
+---
+- hosts: vagrant-machine
+  become: yes
+  tasks:
+
+  - name: Instala dependencias do docker
+    apt:
+      pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+      state: present
+
+  - name: Adiciona chave GPG
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+  
+  - name: Adiciona repositório
+    shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+
+  - name: Atualiza Pacotes
+    apt:
+      update_cache: yes
+
+  - name: Instala Docker e Docker-compose
+    apt:
+      pkg:
+        - docker
+        - docker-compose
+      state: present
+
