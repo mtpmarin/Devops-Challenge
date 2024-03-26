@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   app:
@@ -7,12 +7,16 @@ services:
       dockerfile: Dockerfile.app
     hostname: app-challenge
     restart: always
+    networks:
+      - devops-challenge
     ports:
       - "8000:8000"
   
   cadvisor:
     container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
+    networks:
+      - devops-challenge
     ports:
       - "8080:8080"
     volumes: 
@@ -28,19 +32,21 @@ services:
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
+    networks:
+      - devops-challenge
     ports:
       - "9090:9090"
     volumes: 
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     privileged: true
-    network_mode: "bridge"
     depends_on:
       - cadvisor
  
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
-    network_mode: "bridge"
+    networks:
+      - devops-challenge
     ports:
       - "3000:3000"
     environment:
@@ -50,10 +56,15 @@ services:
       - "grafana-data:/var/lib/grafana"
       - "./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml"
       - "./grafana/dashboards/:/var/lib/grafana/dashboards/"
+      - "./grafana/dashboards/dashboard.json:/usr/share/grafana/public/dashboards/home.json"
       - "./grafana/default.yaml:/etc/grafana/provisioning/dashboards/default.yaml"
     privileged: true
     depends_on:
       - prometheus
+
+networks:
+  devops-challenge:
+    name: devops-challenge
 
 volumes:
   grafana-data:

@@ -8,4 +8,4 @@ RUN pip3 install -r requirements.txt
 
 RUN apk update && apk add py3-gunicorn
 
-CMD gunicorn --log-level debug api:app
+CMD gunicorn --log-level debug -b 0.0.0.0:8000 api:app

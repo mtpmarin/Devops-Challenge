@@ -24,10 +24,21 @@
     apt:
       update_cache: yes
 
-  - name: Instala Docker e Docker-compose
+  - name: Instala Docker 
     apt:
       pkg:
         - docker
         - docker-compose
       state: present
 
+  - name: Baixando Docker-compose versão 1.29
+    shell: curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  
+  - name: Habilitando docker-compose
+    shell: chmod +x /usr/local/bin/docker-compose
+
+        
+  - name: Iniciando projeto com docker-compose up -d
+    shell: docker-compose up -d
+    args:
+      chdir: /srv/challenge
