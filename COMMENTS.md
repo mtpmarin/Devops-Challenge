@@ -1,3 +1,7 @@
+# Data
+26 de Março de 2024
+Ajuste Final: 17:36
+
 # Softwares utilizados
 
 * [Docker](https://docs.docker.com/engine/install/) - Versão 24.0
